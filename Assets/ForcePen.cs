@@ -18,6 +18,7 @@ public class ForcePen : MonoBehaviour
     private LineRenderer currentDrawing;
     private int index;
     private int currentColorIndex;
+    private List<GameObject> drawings = new List<GameObject>();
 
     private void Start()
     {
@@ -40,6 +41,10 @@ public class ForcePen : MonoBehaviour
         {
             SwitchColor();
         }
+        else if (OVRInput.GetDown(OVRInput.Button.Four))
+        {
+            DeleteAllDrawings();
+        }
     }
 
     private void Draw()
@@ -53,6 +58,7 @@ public class ForcePen : MonoBehaviour
             currentDrawing.startWidth = currentDrawing.endWidth = penWidth;
             currentDrawing.positionCount = 1;
             currentDrawing.SetPosition(0, tip.position);
+            drawings.Add(currentDrawing.gameObject);
         }
         else
         {
@@ -77,5 +83,14 @@ public class ForcePen : MonoBehaviour
             currentColorIndex++;
         }
         tipMaterial.color = penColors[currentColorIndex];
+    }
+
+    private void DeleteAllDrawings()
+    {
+        foreach (GameObject drawing in drawings)
+        {
+            Destroy(drawing);
+        }
+        drawings.Clear();
     }
 }
